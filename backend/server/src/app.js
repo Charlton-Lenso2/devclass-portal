@@ -12,6 +12,7 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "DevClass Portal API is running" });
 });
 
+app.use("/api/notifications", require("./routes/notification.routes"));
 app.use("/api/categories", require("./routes/category.routes"));
 app.use("/api/activities", require("./routes/activity.routes"));
 app.use("/api/auth", require("./routes/auth.routes"));

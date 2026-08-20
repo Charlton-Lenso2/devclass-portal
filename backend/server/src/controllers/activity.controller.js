@@ -1,4 +1,5 @@
 const prisma = require("../config/db");
+const { notifyAllStudents } = require("../services/notification.service");
 
 // GET anyone authenticated can view
 async function getActivities(req, res, next) {
@@ -38,7 +39,7 @@ async function getActivityById(req, res, next) {
   }
 }
 
-// POST 
+// POST
 async function createActivity(req, res, next) {
   try {
     const {
@@ -66,8 +67,14 @@ async function createActivity(req, res, next) {
         dueDate: dueDate ? new Date(dueDate) : null,
         location,
         categoryId: categoryId ? Number(categoryId) : null,
-        createdById: req.user.id, 
+        createdById: req.user.id,
       },
+    });
+
+    await notifyAllStudents({
+      activityId: activity.id,
+      type: "NEW_ACTIVITY",
+      message: `New ${activity.type.toLowerCase()} posted: ${activity.title}`,
     });
 
     res.status(201).json(activity);
@@ -120,7 +127,7 @@ async function updateActivity(req, res, next) {
   }
 }
 
-// DELETE 
+// DELETE
 async function archiveActivity(req, res, next) {
   try {
     const { id } = req.params;
