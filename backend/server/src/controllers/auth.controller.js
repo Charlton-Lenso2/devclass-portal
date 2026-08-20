@@ -2,11 +2,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const prisma = require("../config/db");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
+const isProduction = process.env.NODE_ENV === "production";
 
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "strict",
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
   maxAge: 30 * 24 * 60 * 60 * 1000,
 };
 
