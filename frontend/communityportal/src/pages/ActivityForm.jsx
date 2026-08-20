@@ -1,11 +1,7 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import {
-  getActivityById,
-  createActivity,
-  updateActivity,
-} from "../api/activities";
-import api from "../api/axios";
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { getActivityById, createActivity, updateActivity } from '../api/activities';
+import api from '../api/axios';
 
 export default function ActivityForm() {
   const { id } = useParams();
@@ -14,23 +10,20 @@ export default function ActivityForm() {
 
   const [categories, setCategories] = useState([]);
   const [form, setForm] = useState({
-    title: "",
-    description: "",
-    type: "ASSIGNMENT",
+    title: '',
+    description: '',
+    type: 'ASSIGNMENT',
     priority: 0,
-    startDate: "",
-    dueDate: "",
-    location: "",
-    categoryId: "",
+    startDate: '',
+    dueDate: '',
+    location: '',
+    categoryId: '',
   });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(isEditing);
 
   useEffect(() => {
-    api
-      .get("/categories")
-      .then((res) => setCategories(res.data))
-      .catch(() => {});
+    api.get('/categories').then((res) => setCategories(res.data)).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -40,17 +33,17 @@ export default function ActivityForm() {
         const res = await getActivityById(id);
         const a = res.data;
         setForm({
-          title: a.title || "",
-          description: a.description || "",
-          type: a.type || "ASSIGNMENT",
+          title: a.title || '',
+          description: a.description || '',
+          type: a.type || 'ASSIGNMENT',
           priority: a.priority ?? 0,
-          startDate: a.startDate ? a.startDate.slice(0, 16) : "",
-          dueDate: a.dueDate ? a.dueDate.slice(0, 16) : "",
-          location: a.location || "",
-          categoryId: a.categoryId || "",
+          startDate: a.startDate ? a.startDate.slice(0, 16) : '',
+          dueDate: a.dueDate ? a.dueDate.slice(0, 16) : '',
+          location: a.location || '',
+          categoryId: a.categoryId || '',
         });
       } catch (err) {
-        setError("Failed to load activity");
+        setError('Failed to load activity');
       } finally {
         setLoading(false);
       }
@@ -65,10 +58,10 @@ export default function ActivityForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
+    setError('');
 
     if (!form.title || !form.type) {
-      setError("Title and type are required");
+      setError('Title and type are required');
       return;
     }
 
@@ -78,46 +71,28 @@ export default function ActivityForm() {
       } else {
         await createActivity(form);
       }
-      navigate("/activities");
+      navigate('/activities');
     } catch (err) {
-      setError(err.response?.data?.error || "Failed to save activity");
+      setError(err.response?.data?.error || 'Failed to save activity');
     }
   }
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <Link to="/activities">&larr; Back to Activities</Link>
-      <h1>{isEditing ? "Edit Activity" : "New Activity"}</h1>
+    <div className="page-container">
+      <Link to="/activities" className="detail-back">&larr; Back to Activities</Link>
+      <h1>{isEditing ? 'Edit Activity' : 'New Activity'}</h1>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 12,
-          maxWidth: 480,
-        }}
-      >
+      <form onSubmit={handleSubmit} className="form-stack">
         <label>
           Title *
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            required
-          />
+          <input name="title" value={form.title} onChange={handleChange} required />
         </label>
 
         <label>
           Description
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            rows={4}
-          />
+          <textarea name="description" value={form.description} onChange={handleChange} rows={4} />
         </label>
 
         <label>
@@ -132,66 +107,37 @@ export default function ActivityForm() {
 
         <label>
           Category
-          <select
-            name="categoryId"
-            value={form.categoryId}
-            onChange={handleChange}
-          >
+          <select name="categoryId" value={form.categoryId} onChange={handleChange}>
             <option value="">None</option>
             {categories.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
+              <option key={c.id} value={c.id}>{c.name}</option>
             ))}
           </select>
         </label>
 
         <label>
           Priority
-          <input
-            type="number"
-            name="priority"
-            value={form.priority}
-            onChange={handleChange}
-            min={0}
-            max={5}
-          />
+          <input type="number" name="priority" value={form.priority} onChange={handleChange} min={0} max={5} />
         </label>
 
         <label>
           Location
-          <input
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-          />
+          <input name="location" value={form.location} onChange={handleChange} />
         </label>
 
         <label>
           Start Date
-          <input
-            type="datetime-local"
-            name="startDate"
-            value={form.startDate}
-            onChange={handleChange}
-          />
+          <input type="datetime-local" name="startDate" value={form.startDate} onChange={handleChange} />
         </label>
 
         <label>
           Due Date
-          <input
-            type="datetime-local"
-            name="dueDate"
-            value={form.dueDate}
-            onChange={handleChange}
-          />
+          <input type="datetime-local" name="dueDate" value={form.dueDate} onChange={handleChange} />
         </label>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p className="form-error">{error}</p>}
 
-        <button type="submit">
-          {isEditing ? "Save Changes" : "Create Activity"}
-        </button>
+        <button type="submit" className="btn-primary">{isEditing ? 'Save Changes' : 'Create Activity'}</button>
       </form>
     </div>
   );

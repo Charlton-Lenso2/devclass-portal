@@ -5,9 +5,9 @@ const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production", // requires HTTPS in prod
+  secure: process.env.NODE_ENV === "production", 
   sameSite: "strict",
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  maxAge: 7 * 24 * 60 * 60 * 1000, 
 };
 
 async function register(req, res, next) {
@@ -25,15 +25,23 @@ async function register(req, res, next) {
       return res.status(409).json({ error: "Email already in use" });
     }
 
+    let finalRole = "STUDENT";
+
+    if (role === "ADMIN") {
+      const adminCount = await prisma.user.count({ where: { role: "ADMIN" } });
+      if (adminCount >= 2) {
+        return res.status(403).json({
+          error:
+            "Admin registration is closed. This class already has the maximum number of admins.",
+        });
+      }
+      finalRole = "ADMIN";
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        role: role === "ADMIN" ? "ADMIN" : "STUDENT", // never trust client to self-assign admin blindly in a real app — flagged below
-      },
+      data: { name, email, password: hashedPassword, role: finalRole },
     });
 
     const accessToken = generateAccessToken(user);
@@ -53,7 +61,6 @@ async function register(req, res, next) {
     next(err);
   }
 }
-
 async function login(req, res, next) {
   try {
     const { email, password } = req.body;

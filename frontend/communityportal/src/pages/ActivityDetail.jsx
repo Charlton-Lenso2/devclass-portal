@@ -33,74 +33,64 @@ export default function ActivityDetail() {
     }
   }
 
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error) return <p className="form-error">{error}</p>;
   if (!activity) return <p>Loading...</p>;
 
   return (
-    <div>
-      <Link to="/activities">&larr; Back to Activities</Link>
-      <div style={{ marginTop: 16 }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
+    <div className="page-container">
+      <Link to="/activities" className="detail-back">
+        &larr; Back to Activities
+      </Link>
+
+      <div className="card-row">
+        <h1>{activity.title}</h1>
+        <span
+          className="badge"
+          style={{ background: getStatusColor(activity.status) }}
         >
-          <h1>{activity.title}</h1>
-          <span
-            style={{
-              background: getStatusColor(activity.status),
-              color: "white",
-              padding: "4px 10px",
-              borderRadius: 12,
-              fontSize: 12,
-            }}
-          >
-            {activity.status}
-          </span>
-        </div>
-
-        <p>
-          <strong>Type:</strong> {activity.type}
-        </p>
-        {activity.category && (
-          <p>
-            <strong>Category:</strong> {activity.category.name}
-          </p>
-        )}
-        {activity.description && <p>{activity.description}</p>}
-        {activity.location && (
-          <p>
-            <strong>Location:</strong> {activity.location}
-          </p>
-        )}
-        {activity.startDate && (
-          <p>
-            <strong>Starts:</strong>{" "}
-            {new Date(activity.startDate).toLocaleString()}
-          </p>
-        )}
-        {activity.dueDate && (
-          <p>
-            <strong>Due:</strong> {new Date(activity.dueDate).toLocaleString()}
-          </p>
-        )}
-        <p style={{ fontSize: 13, color: "#777" }}>
-          Posted by {activity.createdBy?.name}
-        </p>
-
-        {user?.role === "ADMIN" && (
-          <div style={{ marginTop: 20 }}>
-            <Link to={`/activities/${activity.id}/edit`}>
-              <button>Edit</button>
-            </Link>
-            <button onClick={handleArchive} style={{ marginLeft: 8 }}>
-              Archive
-            </button>
-          </div>
-        )}
+          {activity.status}
+        </span>
       </div>
+
+      <p className="detail-field">
+        <strong>Type:</strong> {activity.type}
+      </p>
+      {activity.category && (
+        <p className="detail-field">
+          <strong>Category:</strong> {activity.category.name}
+        </p>
+      )}
+      {activity.description && (
+        <p className="detail-field">{activity.description}</p>
+      )}
+      {activity.location && (
+        <p className="detail-field">
+          <strong>Location:</strong> {activity.location}
+        </p>
+      )}
+      {activity.startDate && (
+        <p className="detail-field">
+          <strong>Starts:</strong>{" "}
+          {new Date(activity.startDate).toLocaleString()}
+        </p>
+      )}
+      {activity.dueDate && (
+        <p className="detail-field">
+          <strong>Due:</strong> {new Date(activity.dueDate).toLocaleString()}
+        </p>
+      )}
+      <p className="card-meta">Posted by {activity.createdBy?.name}</p>
+
+      {user?.role === "ADMIN" && (
+        <div className="detail-actions">
+          <Link to={`/activities/${activity.id}/edit`}>
+            <button className="btn-secondary">Edit</button>
+          </Link>
+          <button onClick={handleArchive} className="btn-danger">
+            Archive
+          </button>
+        </div>
+      )}
     </div>
   );
 }

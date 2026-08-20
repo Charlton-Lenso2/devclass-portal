@@ -25,69 +25,41 @@ export default function Activities() {
   }, []);
 
   if (loading) return <p>Loading activities...</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (error) return <p className="form-error">{error}</p>;
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <div className="page-container">
+      <div className="page-header">
         <h1>Activities</h1>
         {user?.role === "ADMIN" && (
           <Link to="/activities/new">
-            <button>+ New Activity</button>
+            <button className="btn-primary">+ New Activity</button>
           </Link>
         )}
       </div>
 
-      {activities.length === 0 && <p>No activities yet.</p>}
+      {activities.length === 0 && (
+        <p className="empty-state">No activities yet.</p>
+      )}
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul className="list-plain">
         {activities.map((activity) => (
-          <li
-            key={activity.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: 8,
-              padding: 16,
-              marginBottom: 12,
-            }}
-          >
-            <Link
-              to={`/activities/${activity.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
+          <li key={activity.id} className="card">
+            <Link to={`/activities/${activity.id}`} className="card-link">
+              <div className="card-row">
                 <div>
                   <strong>{activity.title}</strong>
-                  <p style={{ margin: "4px 0", color: "#555" }}>
-                    {activity.type}
-                  </p>
+                  <p className="card-subtitle">{activity.type}</p>
                 </div>
                 <span
-                  style={{
-                    background: getStatusColor(activity.status),
-                    color: "white",
-                    padding: "4px 10px",
-                    borderRadius: 12,
-                    fontSize: 12,
-                  }}
+                  className="badge"
+                  style={{ background: getStatusColor(activity.status) }}
                 >
                   {activity.status}
                 </span>
               </div>
               {activity.dueDate && (
-                <p style={{ margin: "8px 0 0", fontSize: 13, color: "#777" }}>
+                <p className="card-meta">
                   Due: {new Date(activity.dueDate).toLocaleString()}
                 </p>
               )}
