@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+enum ActivityType {
+  ASSIGNMENT
+  EXERCISE
+  PROJECT
+  EVENT
+}
+
+enum ActivityStatus {
+  ACTIVE
+  DUE_SOON
+  EXPIRED
+  ARCHIVED
+}
+
+enum NotificationType {
+  NEW_ACTIVITY
+  DUE_SOON
+  DUE_TOMORROW
+  EXPIRED
+  ADMIN_REVIEW_NEEDED
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  password      String
+  role          Role           @default(STUDENT)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  activities    Activity[]     @relation("CreatedActivities")
+  announcements Announcement[] @relation("CreatedAnnouncements")
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  activities Activity[]
+
+  @@map("category")
+}
+
+model Activity {
+  id           Int            @id @default(autoincrement())
+  title        String
+  description  String?
+  type         ActivityType
+  priority     Int            @default(0)
+  status       ActivityStatus @default(ACTIVE)
+  startDate    DateTime?      @map("start_date")
+  dueDate      DateTime?      @map("due_date")
+  location     String?
+
+  categoryId   Int?           @map("category_id")
+  category     Category?      @relation(fields: [categoryId], references: [id])
+
+  createdById  Int            @map("created_by_id")
+  createdBy    User           @relation("CreatedActivities", fields: [createdById], references: [id])
+
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
+
+  notifications Notification[]
+
+  @@index([dueDate])
+  @@index([status])
+  @@map("activity")
+}
+
+model Notification {
+  id          Int              @id @default(autoincrement())
+  userId      Int              @map("user_id")
+  user        User             @relation(fields: [userId], references: [id])
+
+  activityId  Int?             @map("activity_id")
+  activity    Activity?        @relation(fields: [activityId], references: [id])
+
+  type        NotificationType
+  message     String
+  isRead      Boolean          @default(false) @map("is_read")
+  createdAt   DateTime         @default(now()) @map("created_at")
+
+  @@unique([userId, activityId, type])
+  @@map("notification")
+}
+
+model Announcement {
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  createdById Int      @map("created_by_id")
+  createdBy   User     @relation("CreatedAnnouncements", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("announcement")
+}
