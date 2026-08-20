@@ -12,6 +12,7 @@ import Announcements from "./pages/Announcements";
 import NavBar from "./components/NavBar";
 import AdminDashboard from "./pages/AdminDashboard";
 
+
 export default function App() {
   return (
     <BrowserRouter>
