@@ -1,15 +1,20 @@
 require("dotenv/config");
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "DevClass Portal API is running" });
 });
 
+app.use("/api/categories", require("./routes/category.routes"));
+app.use("/api/activities", require("./routes/activity.routes"));
+app.use("/api/auth", require("./routes/auth.routes"));
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(err.status || 500).json({
