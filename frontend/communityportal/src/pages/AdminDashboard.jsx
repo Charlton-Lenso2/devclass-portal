@@ -22,7 +22,7 @@ export default function AdminDashboard() {
     load();
   }, []);
 
-  if (loading) return <p>Loading dashboard...</p>;
+  if (loading) return <p className="loading-state">Loading dashboard...</p>;
 
   return (
     <div className="page-container">
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
       )}
 
       <section className="dashboard-section">
-        <h2>Expired — Needs Review</h2>
+        <h2>Expired, Needs Review</h2>
         {expiredActivities.length === 0 && (
           <p className="empty-state">Nothing expired right now.</p>
         )}

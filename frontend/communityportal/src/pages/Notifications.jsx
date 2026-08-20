@@ -35,7 +35,7 @@ export default function Notifications() {
     setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className="loading-state">Loading...</p>;
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 

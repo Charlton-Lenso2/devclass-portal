@@ -11,7 +11,8 @@ import Notifications from "./pages/Notifications";
 import Announcements from "./pages/Announcements";
 import NavBar from "./components/NavBar";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import Categories from "./pages/Categories";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -90,6 +91,22 @@ export default function App() {
             element={
               <ProtectedRoute requiredRole="ADMIN">
                 <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/categories"
+            element={
+              <ProtectedRoute requiredRole="ADMIN">
+                <Categories />
               </ProtectedRoute>
             }
           />

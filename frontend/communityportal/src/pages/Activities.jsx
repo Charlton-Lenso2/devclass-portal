@@ -24,7 +24,7 @@ export default function Activities() {
     load();
   }, []);
 
-  if (loading) return <p>Loading activities...</p>;
+  if (loading) return <p className="loading-state">Loading activities...</p>;
   if (error) return <p className="form-error">{error}</p>;
 
   return (

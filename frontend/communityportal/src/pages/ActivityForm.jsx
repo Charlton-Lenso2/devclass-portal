@@ -77,7 +77,7 @@ export default function ActivityForm() {
     }
   }
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p className='loading-state'>Loading...</p>;
 
   return (
     <div className="page-container">

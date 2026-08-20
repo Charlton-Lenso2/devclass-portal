@@ -34,7 +34,7 @@ export default function Dashboard() {
     load();
   }, []);
 
-  if (loading) return <p>Loading dashboard...</p>;
+  if (loading) return <p className="loading-state">Loading dashboard...</p>;
 
   return (
     <div className="page-container">
@@ -43,7 +43,7 @@ export default function Dashboard() {
       <section className="dashboard-section">
         <h2>Due Soon & Expired</h2>
         {dueSoon.length === 0 && (
-          <p className="empty-state">Nothing urgent — you're all caught up.</p>
+          <p className="empty-state">Nothing urgent, you're all caught up.</p>
         )}
         <ul className="list-plain">
           {dueSoon.map((a) => (

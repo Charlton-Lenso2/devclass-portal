@@ -34,7 +34,7 @@ export default function ActivityDetail() {
   }
 
   if (error) return <p className="form-error">{error}</p>;
-  if (!activity) return <p>Loading...</p>;
+  if (!activity) return <p className="loading-state">Loading...</p>;
 
   return (
     <div className="page-container">
