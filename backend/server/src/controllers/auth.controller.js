@@ -4,6 +4,10 @@ const prisma = require("../config/db");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 const isProduction = process.env.NODE_ENV === "production";
 
+if (isProduction) {
+  app.set("trust proxy", 1);
+}
+
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: isProduction,
