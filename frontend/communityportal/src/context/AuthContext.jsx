@@ -17,18 +17,19 @@ export function AuthProvider({ children }) {
     async function tryRestoreSession() {
       try {
         const res = await api.post("/auth/refresh");
-        setAccessToken(res.data.accessToken);
-        const meRes = await api.get("/users/me");
+        const token = res.data.accessToken;
+        setAccessToken(token);
+        const meRes = await api.get("/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setUser(meRes.data);
       } catch {
-        // no valid refresh cookie — user needs to log in normally
       } finally {
         setInitializing(false);
       }
     }
     tryRestoreSession();
   }, []);
-
   async function login(email, password) {
     const res = await api.post("/auth/login", { email, password });
     setUser(res.data.user);
