@@ -6,18 +6,16 @@ const api = axios.create({
 });
 
 let getToken = () => null;
-let setToken = () => {};
 
 export function setTokenGetter(fn) {
   getToken = fn;
 }
-export function setTokenSetter(fn) {
-  setToken = fn;
-}
 
 api.interceptors.request.use((config) => {
   const token = getToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -34,12 +32,10 @@ api.interceptors.response.use(
           {},
           { withCredentials: true },
         );
-        setToken(res.data.accessToken);
-        originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+        const newToken = res.data.accessToken;
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshErr) {
-        setToken(null);
-        window.location.href = "/login";
         return Promise.reject(refreshErr);
       }
     }

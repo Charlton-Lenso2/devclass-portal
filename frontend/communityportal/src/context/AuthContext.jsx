@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import api, { setTokenGetter, setTokenSetter } from "../api/axios";
+import api, { setTokenGetter } from "../api/axios";
 
 const AuthContext = createContext(null);
 
@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     setTokenGetter(() => accessToken);
-    setTokenSetter((token) => setAccessToken(token));
   }, [accessToken]);
 
   useEffect(() => {
@@ -18,18 +17,24 @@ export function AuthProvider({ children }) {
       try {
         const res = await api.post("/auth/refresh");
         const token = res.data.accessToken;
-        setAccessToken(token);
+
+        // fetch /me using the token directly, not relying on the interceptor's stale closure
         const meRes = await api.get("/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
+
+        setAccessToken(token);
         setUser(meRes.data);
-      } catch {
+      } catch (err) {
+        setAccessToken(null);
+        setUser(null);
       } finally {
         setInitializing(false);
       }
     }
     tryRestoreSession();
   }, []);
+
   async function login(email, password) {
     const res = await api.post("/auth/login", { email, password });
     setUser(res.data.user);
