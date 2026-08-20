@@ -62,7 +62,7 @@ async function createActivity(req, res, next) {
         title,
         description,
         type,
-        priority: priority ?? 0,
+        priority: priority ? Number(priority) : 0,
         startDate: startDate ? new Date(startDate) : null,
         dueDate: dueDate ? new Date(dueDate) : null,
         location,
