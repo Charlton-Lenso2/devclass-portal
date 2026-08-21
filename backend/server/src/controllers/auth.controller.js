@@ -60,6 +60,9 @@ async function register(req, res, next) {
       },
     });
   } catch (err) {
+    if (err.code === "P2002") {
+      return res.status(409).json({ error: "Email already in use" });
+    }
     next(err);
   }
 }
