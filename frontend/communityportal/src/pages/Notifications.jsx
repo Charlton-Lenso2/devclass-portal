@@ -5,6 +5,7 @@ import {
   markAsRead,
   markAllAsRead,
 } from "../api/notifications";
+import { Bell, BellRing, CheckCheck, Check } from "lucide-react";
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
@@ -42,21 +43,39 @@ export default function Notifications() {
   return (
     <div className="page-container">
       <div className="page-header">
-        <h1>Notifications {unreadCount > 0 && `(${unreadCount} unread)`}</h1>
+        <h1 className="page-title-icon">
+          {unreadCount > 0 ? (
+            <BellRing size={24} className="icon-ring" />
+          ) : (
+            <Bell size={24} />
+          )}
+          Notifications{" "}
+          {unreadCount > 0 && (
+            <span className="unread-count">{unreadCount}</span>
+          )}
+        </h1>
         {unreadCount > 0 && (
           <button onClick={handleMarkAllRead} className="btn-secondary">
+            <CheckCheck size={16} />
             Mark all as read
           </button>
         )}
       </div>
 
       {notifications.length === 0 && (
-        <p className="empty-state">No notifications yet.</p>
+        <div className="empty-state">
+          <Bell size={32} style={{ opacity: 0.3, marginBottom: 8 }} />
+          <p>No notifications yet.</p>
+        </div>
       )}
 
       <ul className="list-plain">
-        {notifications.map((n) => (
-          <li key={n.id} className={`card ${!n.isRead ? "card-unread" : ""}`}>
+        {notifications.map((n, i) => (
+          <li
+            key={n.id}
+            className={`card notification-card ${!n.isRead ? "card-unread" : ""}`}
+            style={{ animationDelay: `${i * 40}ms` }}
+          >
             <p style={{ margin: 0 }}>{n.message}</p>
             <div className="card-row" style={{ marginTop: 8 }}>
               <div>
@@ -81,6 +100,7 @@ export default function Notifications() {
                   className="btn-secondary"
                   style={{ fontSize: 12, padding: "4px 10px" }}
                 >
+                  <Check size={14} />
                   Mark read
                 </button>
               )}

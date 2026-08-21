@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
+import { UserCircle, Mail, Lock, ShieldCheck } from "lucide-react";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -41,14 +42,22 @@ export default function Profile() {
 
   return (
     <div className="page-container">
-      <h1>My Profile</h1>
-      <p className="card-meta" style={{ marginBottom: 20 }}>
-        Role: {user?.role}
-      </p>
+      <div className="profile-header">
+        <div className="profile-avatar-large">{name?.[0]?.toUpperCase()}</div>
+        <div>
+          <h1 style={{ margin: 0 }}>{name}</h1>
+          <span className="role-pill">
+            <ShieldCheck size={13} />
+            {user?.role}
+          </span>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit} className="form-stack">
         <label>
-          Name
+          <span className="label-with-icon">
+            <UserCircle size={15} /> Name
+          </span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -57,7 +66,9 @@ export default function Profile() {
         </label>
 
         <label>
-          Email
+          <span className="label-with-icon">
+            <Mail size={15} /> Email
+          </span>
           <input
             type="email"
             value={email}
@@ -67,7 +78,9 @@ export default function Profile() {
         </label>
 
         <label>
-          New Password
+          <span className="label-with-icon">
+            <Lock size={15} /> New Password
+          </span>
           <input
             type="password"
             value={password}
