@@ -11,6 +11,7 @@ async function getMe(req, res, next) {
         name: true,
         email: true,
         role: true,
+        avatar: true,
         createdAt: true,
       },
     });
@@ -20,20 +21,20 @@ async function getMe(req, res, next) {
   }
 }
 
-// PUT /api/users/me — update your own name/email/password
 async function updateMe(req, res, next) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar } = req.body;
     const data = {};
 
     if (name) data.name = name;
     if (email) data.email = email;
     if (password) data.password = await bcrypt.hash(password, 10);
+    if (avatar !== undefined) data.avatar = avatar;
 
     const user = await prisma.user.update({
       where: { id: req.user.id },
       data,
-      select: { id: true, name: true, email: true, role: true },
+      select: { id: true, name: true, email: true, role: true, avatar: true },
     });
 
     res.json(user);
