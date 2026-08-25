@@ -68,7 +68,7 @@ export default function Dashboard() {
           <p className="dash-hero-sub">
             {dueSoon.length > 0
               ? `You have ${dueSoon.length} ${dueSoon.length === 1 ? "item" : "items"} that need attention.`
-              : "You're all caught up — nothing urgent right now."}
+              : "You're all caught up, nothing urgent right now."}
           </p>
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function Dashboard() {
         {dueSoon.length === 0 ? (
           <div className="empty-state-card">
             <CheckCircle2 size={28} style={{ opacity: 0.35 }} />
-            <p>Nothing urgent — you're all caught up.</p>
+            <p>Nothing urgent, you're all caught up.</p>
           </div>
         ) : (
           <ul className="list-plain">

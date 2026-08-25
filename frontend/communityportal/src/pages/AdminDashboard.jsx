@@ -78,7 +78,7 @@ export default function AdminDashboard() {
           <p className="dash-hero-sub">
             {expiredActivities.length > 0
               ? `${expiredActivities.length} activity ${expiredActivities.length === 1 ? "needs" : "items need"} your review.`
-              : "Everything's on track — nothing needs your attention right now."}
+              : "Everything's on track, nothing needs your attention right now."}
           </p>
         </div>
       </div>
@@ -123,7 +123,7 @@ export default function AdminDashboard() {
                 color: "var(--color-danger)",
               }}
             />
-            Expired — Needs Review
+            Expired, Needs Review
           </h2>
           <Link to="/activities" className="section-link">
             View all <ArrowRight size={14} />
