@@ -764,6 +764,22 @@ button {
   }
 }
 
+
+.offline-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fef2f2;
+  color: var(--color-danger);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
 @keyframes ring {
   0%,
   100% {
