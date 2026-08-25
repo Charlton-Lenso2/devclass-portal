@@ -13,6 +13,7 @@ import Notifications from "./pages/Notifications";
 import Announcements from "./pages/Announcements";
 import Categories from "./pages/Categories";
 import Profile from "./pages/Profile";
+import OfflineBanner from "./components/OfflineBanner";
 
 function HomeRedirect() {
   const { user, initializing } = useAuth();
