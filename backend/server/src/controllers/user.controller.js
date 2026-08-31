@@ -6,14 +6,20 @@ async function getMe(req, res, next) {
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user.id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        avatar: true,
-        createdAt: true,
-      },
+      select: { id: true, name: true, email: true, role: true, avatar: true, onboarded: true, createdAt: true },
+    });
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function completeOnboarding(req, res, next) {
+  try {
+    const user = await prisma.user.update({
+      where: { id: req.user.id },
+      data: { onboarded: true },
+      select: { id: true, name: true, email: true, role: true, avatar: true, onboarded: true },
     });
     res.json(user);
   } catch (err) {
@@ -60,4 +66,4 @@ async function getAllUsers(req, res, next) {
   }
 }
 
-module.exports = { getMe, updateMe, getAllUsers };
+module.exports = { getMe, updateMe, getAllUsers, completeOnboarding };

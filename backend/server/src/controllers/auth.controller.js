@@ -4,7 +4,6 @@ const prisma = require("../config/db");
 const { generateAccessToken, generateRefreshToken } = require("../utils/token");
 const isProduction = process.env.NODE_ENV === "production";
 
-
 const REFRESH_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: true,
@@ -57,6 +56,7 @@ async function register(req, res, next) {
         name: user.name,
         email: user.email,
         role: user.role,
+        onboarded: user.onboarded,
       },
     });
   } catch (err) {
@@ -88,13 +88,14 @@ async function login(req, res, next) {
     const refreshToken = generateRefreshToken(user);
 
     res.cookie("refreshToken", refreshToken, REFRESH_COOKIE_OPTIONS);
-    res.json({
+    res.status(201).json({
       accessToken,
       user: {
         id: user.id,
         name: user.name,
         email: user.email,
         role: user.role,
+        onboarded: user.onboarded,
       },
     });
   } catch (err) {

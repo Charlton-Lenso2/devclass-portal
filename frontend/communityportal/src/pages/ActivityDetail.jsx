@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { getActivityById, archiveActivity } from "../api/activities";
 import { getStatusColor } from "../utils/statusBadge";
 import { useAuth } from "../context/AuthContext";
+import ReadStatusPanel from "../components/ReadStatusPanel";
 
 export default function ActivityDetail() {
   const { id } = useParams();
@@ -82,14 +83,20 @@ export default function ActivityDetail() {
       <p className="card-meta">Posted by {activity.createdBy?.name}</p>
 
       {user?.role === "ADMIN" && (
-        <div className="detail-actions">
-          <Link to={`/activities/${activity.id}/edit`}>
-            <button className="btn-secondary">Edit</button>
-          </Link>
-          <button onClick={handleArchive} className="btn-danger">
-            Archive
-          </button>
-        </div>
+        <>
+          <div style={{ marginTop: 20 }}>
+            <ReadStatusPanel activityId={activity.id} />
+          </div>
+
+          <div className="detail-actions">
+            <Link to={`/activities/${activity.id}/edit`}>
+              <button className="btn-secondary">Edit</button>
+            </Link>
+            <button onClick={handleArchive} className="btn-danger">
+              Archive
+            </button>
+          </div>
+        </>
       )}
     </div>
   );
