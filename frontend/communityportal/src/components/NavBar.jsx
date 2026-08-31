@@ -12,6 +12,7 @@ import {
   LogOut,
   Menu,
   X,
+  Users,
 } from "lucide-react";
 
 export default function NavBar() {
@@ -44,7 +45,10 @@ export default function NavBar() {
     { to: "/announcements", label: "Announcements", icon: Megaphone },
     { to: "/notifications", label: "Notifications", icon: Bell, badge: unread },
     ...(user.role === "ADMIN"
-      ? [{ to: "/categories", label: "Categories", icon: FolderKanban }]
+      ? [
+          { to: "/students", label: "Students", icon: Users },
+          { to: "/categories", label: "Categories", icon: FolderKanban },
+        ]
       : []),
     { to: "/profile", label: "Profile", icon: UserCircle },
   ];

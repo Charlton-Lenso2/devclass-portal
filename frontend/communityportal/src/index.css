@@ -432,6 +432,127 @@ a:hover {
   color: var(--color-text);
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  color: var(--color-text-muted);
+}
+.search-bar input {
+  border: none;
+  padding: 0;
+  flex: 1;
+}
+.search-bar input:focus {
+  outline: none;
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.student-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.student-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.student-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.student-avatar,
+.student-avatar-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.student-avatar {
+  background: var(--color-primary);
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.student-avatar-img {
+  object-fit: cover;
+  border: 1.5px solid var(--color-border);
+}
+
+.student-info {
+  min-width: 0;
+}
+.student-name {
+  font-weight: 600;
+  margin: 0;
+  font-size: 14px;
+}
+.student-email {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.student-card-stats {
+  background: var(--color-bg);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+}
+.student-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.student-stat-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.student-stat-value {
+  font-size: 13px;
+  font-weight: 700;
+}
+.student-stat-sub {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 6px 0 0;
+}
+
+.student-joined {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .navbar-toggle {
     display: flex;

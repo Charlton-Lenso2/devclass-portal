@@ -16,6 +16,7 @@ import Notifications from "./pages/Notifications";
 import Announcements from "./pages/Announcements";
 import Categories from "./pages/Categories";
 import Profile from "./pages/Profile";
+import Students from "./pages/Students";
 
 function HomeRedirect() {
   const { user, initializing } = useAuth();
@@ -133,6 +134,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/students"
+          element={
+            <ProtectedRoute requiredRole="ADMIN">
+              <Students />
             </ProtectedRoute>
           }
         />

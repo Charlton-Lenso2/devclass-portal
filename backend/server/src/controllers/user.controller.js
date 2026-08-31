@@ -55,12 +55,37 @@ async function updateMe(req, res, next) {
 // GET /api/users — admin only, view all students
 async function getAllUsers(req, res, next) {
   try {
-    const users = await prisma.user.findMany({
+    const students = await prisma.user.findMany({
       where: { role: "STUDENT" },
-      select: { id: true, name: true, email: true, createdAt: true },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        avatar: true,
+        createdAt: true,
+        notifications: {
+          select: { isRead: true },
+        },
+      },
       orderBy: { name: "asc" },
     });
-    res.json(users);
+
+    const enriched = students.map((s) => {
+      const total = s.notifications.length;
+      const read = s.notifications.filter((n) => n.isRead).length;
+      return {
+        id: s.id,
+        name: s.name,
+        email: s.email,
+        avatar: s.avatar,
+        createdAt: s.createdAt,
+        totalNotifications: total,
+        readNotifications: read,
+        readRate: total > 0 ? Math.round((read / total) * 100) : null,
+      };
+    });
+
+    res.json(enriched);
   } catch (err) {
     next(err);
   }
