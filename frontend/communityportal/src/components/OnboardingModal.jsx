@@ -18,12 +18,12 @@ const studentSteps = [
   {
     icon: Sparkles,
     title: "Welcome to DevClass Portal",
-    text: "Everything about your class — assignments, deadlines, and announcements — lives in one place from now on.",
+    text: "Everything about your class, assignments, deadlines, and announcements, lives in one place from now on.",
   },
   {
     icon: ListChecks,
     title: "Track your Activities",
-    text: "Every assignment, exercise, project, and event shows up here with a live status: Active, Due Soon, or Expired — so you always know what's urgent.",
+    text: "Every assignment, exercise, project, and event shows up here with a live status: Active, Due Soon, or Expired, so you always know what's urgent.",
   },
   {
     icon: Bell,
@@ -33,7 +33,7 @@ const studentSteps = [
   {
     icon: Megaphone,
     title: "Check Announcements",
-    text: "Class-wide updates from your admin show up here — separate from individual assignments.",
+    text: "Class-wide updates from your admin show up here, separate from individual assignments.",
   },
   {
     icon: UserCircle,
@@ -61,12 +61,12 @@ const adminSteps = [
   {
     icon: BarChart3,
     title: "Watch your Dashboard",
-    text: "See class-wide stats at a glance — due-soon counts, expired activities needing review, and your most active category.",
+    text: "See class-wide stats at a glance, due-soon counts, expired activities needing review, and your most active category.",
   },
   {
     icon: ShieldCheck,
     title: "See who's reading",
-    text: "On any activity, you can check exactly which students have seen it — and follow up with the ones who haven't.",
+    text: "On any activity, you can check exactly which students have seen it, and follow up with the ones who haven't.",
   },
 ];
 
