@@ -34,36 +34,50 @@ export default function AdminDashboard() {
 
   if (loading) return <p className="loading-state">Loading dashboard...</p>;
 
+  const expiredPct = stats.totalActivities
+    ? Math.round((stats.expiredCount / stats.totalActivities) * 100)
+    : 0;
+
   const cards = [
     {
       label: "Students",
       value: stats.totalStudents,
       icon: Users,
       tone: "blue",
+      trend: "green",
+      hint: "Registered in your class",
     },
     {
       label: "Activities",
       value: stats.totalActivities,
       icon: ListChecks,
       tone: "indigo",
+      trend: "green",
+      hint: `${stats.dueThisWeek} due this week`,
     },
     {
       label: "Due Soon",
       value: stats.dueSoonCount,
       icon: Clock,
       tone: "amber",
+      trend: "amber",
+      hint: "Needs attention soon",
     },
     {
       label: "Expired",
       value: stats.expiredCount,
       icon: AlertTriangle,
       tone: "red",
+      trend: "red",
+      hint: `${expiredPct}% of all activities`,
     },
     {
       label: "Due This Week",
       value: stats.dueThisWeek,
       icon: CalendarDays,
       tone: "green",
+      trend: "green",
+      hint: "Upcoming deadlines",
     },
   ];
 
@@ -84,30 +98,71 @@ export default function AdminDashboard() {
       </div>
 
       <div className="stats-grid">
-        {cards.map(({ label, value, icon: Icon, tone }, i) => (
+        {cards.map(({ label, value, icon: Icon, tone, trend, hint }, i) => (
           <div
             key={label}
-            className="stat-card fade-in"
+            className="stat-card stat-card-modern fade-in"
             style={{ animationDelay: `${i * 50}ms` }}
           >
-            <div className={`stat-icon stat-icon-${tone}`}>
-              <Icon size={18} />
+            <div className="dash-stat-top">
+              <div className={`stat-icon stat-icon-${tone}`}>
+                <Icon size={18} />
+              </div>
+              <TrendingUp
+                size={15}
+                className={`dash-trend-icon dash-trend-${trend}`}
+              />
             </div>
             <p className="stat-number">{value}</p>
             <p className="stat-label">{label}</p>
+            <p className="dash-stat-delta">{hint}</p>
           </div>
         ))}
       </div>
 
       {stats.mostCommonCategory && (
-        <div className="dash-cta-card" style={{ marginBottom: 24 }}>
-          <TrendingUp size={20} style={{ color: "var(--color-primary)" }} />
-          <p style={{ margin: 0 }}>
-            Most active category:{" "}
-            <strong>{stats.mostCommonCategory.name}</strong>{" "}
-            <span className="card-meta">
-              ({stats.mostCommonCategory.activity_count} activities)
+        <div className="dash-progress-card fade-in">
+          <div className="dash-progress-head">
+            <p>
+              Most active category:{" "}
+              <strong>{stats.mostCommonCategory.name}</strong>
+            </p>
+            <span>
+              {stats.totalActivities
+                ? Math.min(
+                    100,
+                    Math.round(
+                      (stats.mostCommonCategory.activity_count /
+                        stats.totalActivities) *
+                        100,
+                    ),
+                  )
+                : 0}
+              %
             </span>
+          </div>
+          <div className="progress-track">
+            <div
+              className="progress-fill"
+              style={{
+                width: `${
+                  stats.totalActivities
+                    ? Math.min(
+                        100,
+                        Math.round(
+                          (stats.mostCommonCategory.activity_count /
+                            stats.totalActivities) *
+                            100,
+                        ),
+                      )
+                    : 0
+                }%`,
+              }}
+            />
+          </div>
+          <p className="dash-progress-sub">
+            {stats.mostCommonCategory.activity_count} of {stats.totalActivities}{" "}
+            activities belong to this category.
           </p>
         </div>
       )}
@@ -139,15 +194,24 @@ export default function AdminDashboard() {
             {expiredActivities.map((a, i) => (
               <li
                 key={a.id}
-                className="card card-alert fade-in"
+                className="fade-in"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
-                <div className="card-row">
-                  <Link to={`/activities/${a.id}`}>{a.title}</Link>
-                  <span className="card-meta">
+                <Link
+                  to={`/activities/${a.id}`}
+                  className="card-link activity-row"
+                >
+                  <div className="activity-icon activity-icon-red">
+                    <AlertTriangle size={16} />
+                  </div>
+                  <div className="activity-main">
+                    <p className="activity-title">{a.title}</p>
+                    <p className="card-meta">Expired</p>
+                  </div>
+                  <span className="activity-time">
                     Was due {new Date(a.dueDate).toLocaleDateString()}
                   </span>
-                </div>
+                </Link>
               </li>
             ))}
           </ul>
